@@ -280,14 +280,6 @@ button[name="power"]:hover {
   }
 }
 
-.desktop-root {
-  position: relative;
-  min-height: 100vh;
-  background: #f0f0f0;
-  padding: 2rem;
-  overflow: hidden;
-}
-
 .desktop-launcher {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -323,6 +315,72 @@ button[name="power"]:hover {
   right: 12px;
   background: none;
   border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Desktop background */
+.desktop-root {
+  display: flex;
+  font-family: system-ui, sans-serif;
+}
+
+/* Widgets (top area, e.g. weather) */
+.desktop-widgets {
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+/* Main content (Todo app as "desktop icons") */
+.desktop-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Taskbar / dock */
+.taskbar {
+  /* position: fixed; */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.taskbar-icon {
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.taskbar-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: white;
   font-size: 1.2rem;
   cursor: pointer;
 }
