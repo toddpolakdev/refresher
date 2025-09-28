@@ -68,7 +68,7 @@ const Weather = () => {
       <input
         type="text"
         placeholder="Enter city..."
-        value={location.city}
+        value={location?.city}
         onChange={(e) => setLocation({ ...location, city: e.target.value })}
         style={{ padding: "0.5rem", marginRight: "0.5rem" }}
       />
@@ -76,7 +76,7 @@ const Weather = () => {
       <input
         type="text"
         placeholder="State (optional)"
-        value={location.stateCode}
+        value={location?.stateCode}
         onChange={(e) =>
           setLocation({ ...location, stateCode: e.target.value })
         }

@@ -120,6 +120,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.5em;
 }
 
 button:hover {
@@ -277,4 +278,51 @@ button[name="power"]:hover {
   button {
     font-size: 1.3rem;
   }
+}
+
+.desktop-root {
+  position: relative;
+  min-height: 100vh;
+  background: #f0f0f0;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.desktop-launcher {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #0070f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  min-width: 300px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
