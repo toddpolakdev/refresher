@@ -3,12 +3,12 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 html,
 body {
@@ -35,15 +35,11 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
-
-.calculator {
-  width: 300px;
-}
+} */
 
 .display-container {
   background-color: #1a202c;
@@ -54,6 +50,7 @@ a {
   flex-direction: column;
   justify-content: flex-end;
   position: relative;
+  margin-bottom: 1rem;
 }
 
 .mode-indicator {
@@ -319,20 +316,61 @@ button[name="power"]:hover {
   cursor: pointer;
 }
 
-/* Desktop background */
 .desktop-root {
   display: flex;
+  min-height: 100vh;
+  /* background: linear-gradient(135deg, #74ebd5, #acb6e5); */
   font-family: system-ui, sans-serif;
 }
 
-/* Widgets (top area, e.g. weather) */
+/* Sidebar */
+.sidebar {
+  width: 280px; /* wider than 220px */
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  /* align-items: stretch; */
+  padding: 1.5rem 1rem;
+  gap: 2rem;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-btn {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #0070f3;
+  color: white;
+  font-weight: 500;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-btn:hover {
+  background: #0059c1;
+  transform: translateY(-2px);
+}
+
+/* Weather widget container */
+.sidebar-widget {
+  /* margin-top: auto; */
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
 .desktop-widgets {
   padding: 1rem;
   display: flex;
   gap: 1rem;
+  /* justify-content: flex-end; */
 }
 
-/* Main content (Todo app as "desktop icons") */
 .desktop-content {
   flex: 1;
   padding: 2rem;
@@ -341,9 +379,45 @@ button[name="power"]:hover {
   justify-content: flex-start;
 }
 
-/* Taskbar / dock */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Modal (window look) */
+.modal-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 10px;
+  padding: 0;
+  min-width: 400px;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: #0070f3;
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
 .taskbar {
-  /* position: fixed; */
   bottom: 0;
   left: 0;
   right: 0;
@@ -383,4 +457,9 @@ button[name="power"]:hover {
   color: white;
   font-size: 1.2rem;
   cursor: pointer;
+}
+
+.weather-input {
+  padding: 0.5rem;
+  width: 100%;
 }

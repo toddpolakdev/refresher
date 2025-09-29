@@ -9,32 +9,25 @@ export default function Desktop() {
   const [isCalcOpen, setCalcOpen] = useState(false);
 
   return (
-    <>
-      <div className="taskbar">
-        <button onClick={() => setCalcOpen(true)} className="taskbar-icon">
-          🧮 Calculator
+    <div className="desktop-root">
+      <aside className="sidebar">
+        <button onClick={() => setCalcOpen(true)} className="sidebar-btn">
+          Calculator
         </button>
-      </div>
-      <div className="desktop-root">
-        {/* Dock / taskbar */}
-
-        {/* Background widgets */}
-        <div className="desktop-widgets">
+        <div className="sidebar-widget">
           <Weather />
         </div>
+      </aside>
 
-        {/* Main desktop content */}
-        <div className="desktop-content">
-          <Todo />
-        </div>
+      <main className="main-content">
+        <Todo />
+      </main>
 
-        {/* Modals */}
-        {isCalcOpen && (
-          <Modal onClose={() => setCalcOpen(false)} title="Calculator">
-            <Calculator />
-          </Modal>
-        )}
-      </div>
-    </>
+      {isCalcOpen && (
+        <Modal onClose={() => setCalcOpen(false)} title="Calculator">
+          <Calculator />
+        </Modal>
+      )}
+    </div>
   );
 }

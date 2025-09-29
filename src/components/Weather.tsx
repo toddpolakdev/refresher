@@ -66,21 +66,21 @@ const Weather = () => {
       <h1>🌦️ Weather</h1>
 
       <input
+        className="weather-input"
         type="text"
         placeholder="Enter city..."
         value={location?.city}
         onChange={(e) => setLocation({ ...location, city: e.target.value })}
-        style={{ padding: "0.5rem", marginRight: "0.5rem" }}
       />
 
       <input
+        className="weather-input"
         type="text"
         placeholder="State (optional)"
         value={location?.stateCode}
         onChange={(e) =>
           setLocation({ ...location, stateCode: e.target.value })
         }
-        style={{ padding: "0.5rem", marginRight: "0.5rem" }}
       />
 
       <button onClick={handleSearch}>Get Weather</button>
