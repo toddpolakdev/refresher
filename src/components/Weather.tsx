@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -16,7 +18,10 @@ type WeatherData = {
 const Weather = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
-  const [location, setLocation] = useLocalStorage();
+  const [location, setLocation] = useLocalStorage("weather-location", {
+    city: "",
+    stateCode: "",
+  });
 
   const fetchWeather = useCallback(async (city: string, stateCode: string) => {
     const locationQuery = stateCode ? `${city},${stateCode},US` : `${city}`;

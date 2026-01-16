@@ -17,7 +17,8 @@ const TodoItem: React.FC<Props> = ({ todo, toggleDone }) => {
         textDecoration: todo.done ? "line-through" : "none",
         cursor: "pointer",
         marginBottom: "0.5rem",
-      }}>
+      }}
+    >
       {todo.text}
     </li>
   );
