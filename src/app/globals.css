@@ -366,6 +366,10 @@ button[name="power"]:hover {
   color: var(--text);
 }
 
+.floating-window.notes-window {
+  width: 700px;
+}
+
 .floating-header {
   background: var(--accent);
   color: #fff;
@@ -1013,11 +1017,112 @@ button[name="power"]:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
+/* ============================================================
+   Mobile / responsive
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Let the whole page scroll; taskbar is pinned separately. */
+  .desktop-root {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    padding-bottom: 54px;
+  }
+
+  .desktop-body {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* Sidebar collapses into a top bar */
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+  .sidebar-brand {
+    border-bottom: none;
+    padding: 0;
+    margin-right: auto;
+    font-size: 1rem;
+  }
+  .sidebar-btn {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  .sidebar-btn:hover {
+    transform: none;
+  }
+  .sidebar-widget {
+    flex-basis: 100%;
+    order: 10;
+  }
+  .sidebar-footer {
+    margin-top: 0;
+    flex: 0 0 auto;
+  }
+  .theme-toggle {
+    width: auto;
+    padding: 0.55rem 0.9rem;
+  }
+
+  .main-content {
+    padding: 1.25rem 1rem;
+  }
+  .home {
+    padding: 1.5rem 0.5rem;
+  }
+
+  /* Taskbar pinned to the bottom of the viewport */
+  .taskbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 0.75rem;
+  }
+  .taskbar-icon {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.8rem;
+  }
+
+  /* Windows: centered, near-full-width, above the taskbar.
+     !important overrides the inline left/top/width used while dragging. */
+  .floating-window,
+  .floating-window.notes-window {
+    left: 50% !important;
+    top: 64px !important;
+    transform: translateX(-50%);
+    width: 94vw !important;
+    max-width: 94vw !important;
+    max-height: calc(100vh - 130px) !important;
+  }
+
+  /* Notes stack vertically when narrow */
+  .notes-layout {
+    flex-direction: column;
+    min-height: 0;
+  }
+  .notes-sidebar {
+    width: 100%;
+    max-height: 150px;
+  }
+}
+
 @media (max-width: 640px) {
   .home-features {
     grid-template-columns: repeat(2, 1fr);
   }
-  .sidebar {
-    width: 200px;
+}
+
+@media (max-width: 400px) {
+  .home-features {
+    grid-template-columns: 1fr;
   }
 }

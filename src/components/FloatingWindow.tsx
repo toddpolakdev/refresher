@@ -10,6 +10,7 @@ interface FloatingWindowProps {
   zIndex?: number;
   minimized?: boolean;
   initialPosition?: { x: number; y: number };
+  className?: string;
 }
 
 export default function FloatingWindow({
@@ -21,6 +22,7 @@ export default function FloatingWindow({
   zIndex = 1000,
   minimized = false,
   initialPosition = { x: 120, y: 120 },
+  className = "",
 }: FloatingWindowProps) {
   const [position, setPosition] = useState(initialPosition);
   const [dragging, setDragging] = useState(false);
@@ -60,7 +62,7 @@ export default function FloatingWindow({
 
   return (
     <div
-      className="floating-window"
+      className={`floating-window ${className}`.trim()}
       style={{
         left: position.x,
         top: position.y,

@@ -20,10 +20,10 @@ type WinId = "calculator" | "todo" | "notes";
 
 type WinState = { open: boolean; minimized: boolean; z: number };
 
-const WINDOW_META: { id: WinId; title: string }[] = [
+const WINDOW_META: { id: WinId; title: string; className?: string }[] = [
   { id: "calculator", title: "Calculator" },
   { id: "todo", title: "Todo List" },
-  { id: "notes", title: "Notes" },
+  { id: "notes", title: "Notes", className: "notes-window" },
 ];
 
 const CLOSED: WinState = { open: false, minimized: false, z: 0 };
@@ -138,6 +138,7 @@ function DesktopShell() {
           <FloatingWindow
             key={w.id}
             title={w.title}
+            className={w.className}
             zIndex={windows[w.id].z}
             minimized={windows[w.id].minimized}
             initialPosition={cascade(i)}
