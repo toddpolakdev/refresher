@@ -23,23 +23,25 @@ const Weather = () => {
     stateCode: "",
   });
 
-  const fetchWeather = useCallback(async (city: string, stateCode: string) => {
-    const locationQuery = stateCode ? `${city},${stateCode},US` : `${city}`;
+  const [error, setError] = useState<string | null>(null);
 
-    const apiKey = "f7dc1574a3d507a5522daaf41f37dac7";
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${locationQuery}&appid=${apiKey}&units=metric`;
+  const fetchWeather = useCallback(async (city: string, stateCode: string) => {
+    const params = new URLSearchParams({ city });
+    if (stateCode) params.set("state", stateCode);
 
     try {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error("City not found.");
-      }
+      const response = await fetch(`/api/weather?${params.toString()}`);
       const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(data?.error || "City not found.");
+      }
+
       setWeather(data);
-    } catch (error) {
-      console.log(error);
+      setError(null);
+    } catch (err) {
+      setWeather(null);
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }, []);
 
@@ -67,15 +69,16 @@ const Weather = () => {
   }, []);
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>🌦️ Weather</h1>
+    <div className="weather">
+      <h3 className="weather-title">🌦️ Weather</h3>
 
       <input
         className="weather-input"
         type="text"
-        placeholder="Enter city..."
+        placeholder="Enter city…"
         value={location?.city}
         onChange={(e) => setLocation({ ...location, city: e.target.value })}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
       />
 
       <input
@@ -86,18 +89,22 @@ const Weather = () => {
         onChange={(e) =>
           setLocation({ ...location, stateCode: e.target.value })
         }
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
       />
 
-      <button onClick={handleSearch}>Get Weather</button>
+      <button className="weather-btn" onClick={handleSearch}>
+        Get Weather
+      </button>
+
+      {error && <p className="weather-error">{error}</p>}
 
       {weather && (
-        <div style={{ marginTop: "2rem" }}>
-          <h2>{weather.name}</h2>
+        <div className="weather-result">
+          <div className="weather-place">{weather.name}</div>
           {convertToFahrenheit !== null && (
-            <p>Temperature: {convertToFahrenheit}°F</p>
+            <div className="weather-temp">{convertToFahrenheit}°F</div>
           )}
-
-          <p>Condition: {weather.weather[0].description}</p>
+          <div className="weather-desc">{weather.weather[0].description}</div>
           <img
             src={`https://openweathermap.org/img/wn/${weather.weather[0]?.icon}@2x.png`}
             alt={weather.weather[0]?.description}
