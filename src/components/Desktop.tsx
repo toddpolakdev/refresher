@@ -7,6 +7,7 @@ import Calculator from "./Calculator";
 import Home from "./Home";
 import Notes from "./Notes";
 import Clock from "./Clock";
+import WeatherPage from "./WeatherPage";
 import Taskbar, { type TaskbarItem } from "./Taskbar";
 import FloatingWindow from "./FloatingWindow";
 
@@ -16,14 +17,27 @@ import { NotesProvider } from "../context/NotesContext";
 
 const Weather = dynamic(() => import("./Weather"), { ssr: false });
 
-type WinId = "calculator" | "todo" | "notes";
+type WinId = "calculator" | "todo" | "notes" | "weather";
 
 type WinState = { open: boolean; minimized: boolean; z: number };
 
-const WINDOW_META: { id: WinId; title: string; className?: string }[] = [
-  { id: "calculator", title: "Calculator" },
-  { id: "todo", title: "Todo List" },
-  { id: "notes", title: "Notes", className: "notes-window" },
+// `sidebar: false` windows have no sidebar launch button — they're opened from
+// another surface instead (weather is launched from the sidebar widget).
+const WINDOW_META: {
+  id: WinId;
+  title: string;
+  className?: string;
+  sidebar?: boolean;
+}[] = [
+  { id: "calculator", title: "Calculator", sidebar: true },
+  { id: "todo", title: "Todo List", sidebar: true },
+  { id: "notes", title: "Notes", className: "notes-window", sidebar: true },
+  {
+    id: "weather",
+    title: "Weather",
+    className: "weather-window",
+    sidebar: false,
+  },
 ];
 
 const CLOSED: WinState = { open: false, minimized: false, z: 0 };
@@ -46,6 +60,7 @@ function DesktopShell() {
     calculator: CLOSED,
     todo: CLOSED,
     notes: CLOSED,
+    weather: CLOSED,
   });
   const zCounter = useRef(10);
 
@@ -60,7 +75,7 @@ function DesktopShell() {
 
   const focus = (id: WinId) =>
     setWindows((prev) => {
-      const maxZ = Math.max(prev.calculator.z, prev.todo.z, prev.notes.z);
+      const maxZ = Math.max(...WINDOW_META.map((w) => prev[w.id].z));
       if (prev[id].z === maxZ && !prev[id].minimized) return prev;
       return {
         ...prev,
@@ -98,6 +113,7 @@ function DesktopShell() {
   const renderBody = (id: WinId) => {
     if (id === "calculator") return <Calculator />;
     if (id === "todo") return <Todo />;
+    if (id === "weather") return <WeatherPage />;
     return <Notes />;
   };
 
@@ -107,7 +123,7 @@ function DesktopShell() {
         <aside className="sidebar">
           <div className="sidebar-brand">🖥️ Desktop</div>
 
-          {WINDOW_META.map((w) => (
+          {WINDOW_META.filter((w) => w.sidebar).map((w) => (
             <button
               key={w.id}
               className="sidebar-btn"
@@ -118,7 +134,7 @@ function DesktopShell() {
           ))}
 
           <div className="sidebar-widget">
-            <Weather />
+            <Weather onExpand={() => open("weather")} />
           </div>
 
           <div className="sidebar-footer">
@@ -129,7 +145,7 @@ function DesktopShell() {
         </aside>
 
         <main className="main-content">
-          <Home />
+          <Home onLaunch={(id) => open(id as WinId)} />
         </main>
       </div>
 
@@ -141,6 +157,7 @@ function DesktopShell() {
             className={w.className}
             zIndex={windows[w.id].z}
             minimized={windows[w.id].minimized}
+            active={!windows[w.id].minimized && windows[w.id].z === topZ}
             initialPosition={cascade(i)}
             onClose={() => close(w.id)}
             onMinimize={() => minimize(w.id)}

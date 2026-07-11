@@ -9,6 +9,7 @@ interface FloatingWindowProps {
   onFocus?: () => void;
   zIndex?: number;
   minimized?: boolean;
+  active?: boolean;
   initialPosition?: { x: number; y: number };
   className?: string;
 }
@@ -21,6 +22,7 @@ export default function FloatingWindow({
   onFocus,
   zIndex = 1000,
   minimized = false,
+  active = true,
   initialPosition = { x: 120, y: 120 },
   className = "",
 }: FloatingWindowProps) {
@@ -62,7 +64,7 @@ export default function FloatingWindow({
 
   return (
     <div
-      className={`floating-window ${className}`.trim()}
+      className={`floating-window ${active ? "is-active" : "is-inactive"} ${className}`.trim()}
       style={{
         left: position.x,
         top: position.y,

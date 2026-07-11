@@ -3,25 +3,26 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import useLocalStorage from "../hooks/useLocalStorage";
+import {
+  DEFAULT_LOCATION,
+  WEATHER_LOCATION_KEY,
+  iconUrl,
+  toFahrenheit,
+  type WeatherData,
+} from "../lib/weather";
 
-type WeatherData = {
-  name: string;
-  main: {
-    temp: number;
-  };
-  weather: {
-    description: string;
-    icon: string;
-  }[];
+type WeatherProps = {
+  // Opens the expanded weather window (forecast, etc.). Provided by Desktop.
+  onExpand?: () => void;
 };
 
-const Weather = () => {
+const Weather = ({ onExpand }: WeatherProps) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
-  const [location, setLocation] = useLocalStorage("weather-location", {
-    city: "",
-    stateCode: "",
-  });
+  const [location, setLocation] = useLocalStorage(
+    WEATHER_LOCATION_KEY,
+    DEFAULT_LOCATION
+  );
 
   const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +54,7 @@ const Weather = () => {
   };
 
   const convertToFahrenheit = useMemo(() => {
-    return weather ? Math.round((weather.main.temp * 9) / 5 + 32) : null;
+    return weather ? toFahrenheit(weather.main.temp) : null;
   }, [weather]);
 
   useEffect(() => {
@@ -99,17 +100,23 @@ const Weather = () => {
       {error && <p className="weather-error">{error}</p>}
 
       {weather && (
-        <div className="weather-result">
+        <button
+          type="button"
+          className="weather-result"
+          onClick={onExpand}
+          title="View forecast"
+        >
           <div className="weather-place">{weather.name}</div>
           {convertToFahrenheit !== null && (
             <div className="weather-temp">{convertToFahrenheit}°F</div>
           )}
           <div className="weather-desc">{weather.weather[0].description}</div>
           <img
-            src={`https://openweathermap.org/img/wn/${weather.weather[0]?.icon}@2x.png`}
+            src={iconUrl(weather.weather[0]?.icon)}
             alt={weather.weather[0]?.description}
           />
-        </div>
+          <span className="weather-expand-hint">View forecast →</span>
+        </button>
       )}
     </div>
   );
